@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang = "sv">
+    <head>
+        <meta charset = "utf-8">
+        <title>Uppgift 5</title>
+    </head>
+    <body>
+        <form method="post" onsubmit="return validate();"></form>
+            <h1 id="errormsg"></h1>
+            <h1>Boka kontakt med säljare</h1>
+            <div>
+                <input type="radio" name="rbWhen" id="rbNow">
+                <label for="rbnow">Ring mig nu</label>
+                <input type="radio" name="rbWhen" id="rbLater">
+                <label for="rbnow">Ring mig senare</label>
+            </div>
+            <div>
+                <label for="time">Välj klockslag</label>
+                <select id="time">
+                    <option value="">Välj en tid</option>
+                    <option value="8">8:00</option>    
+                    <option value="10">10:00</option>  
+                    <option value="12">12:00</option>  
+                </select>
+            </div>
+            <div>
+                <label for="txtsubject"Beskriv ditt ärande></label>
+                <br>
+                <textarea id="txtsubject" rows="10" cols="30"></textarea>
+            </div>
+            <input type="submit" value="Skicka" id="send">
+        </form>
+        <script type="text/javascript" src="uppgift5.js"></script>
+    </body>
+</html>
