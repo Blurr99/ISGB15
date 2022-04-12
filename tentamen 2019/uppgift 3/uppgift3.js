@@ -17,21 +17,21 @@ function modifyDOM(){
 modifyDOM();
 
 //Uppgift 3b)
+
 let divElement = document.querySelector("div");
 
 divElement.addEventListener("click", divElementClick);
 
-function divElementClick(e){
-    let currentDivElement = e.target;
-    currentDivElement.setAttribute("onclick", "false"); //a.
+function divElementClick(event){
 
-    //b.
+    //a. 
+    event.preventDefault(); 
 
-    let pElement = document.querySelector("div p");
-    pElement.addEventListener("click", pElementClick);
+    //b. 
+    event.stopPropagation();
 
-    function pElementClick(e){
-        let clickedElement = e.target;
-        console.log(clickedElement.firstChild);
-    }
+    //c.
+    let pElement = event.target;
+    console.log(pElement.firstChild); //prints text in p-element
+    console.log(event); //prints out the nodetype?
 }
