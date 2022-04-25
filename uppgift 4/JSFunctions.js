@@ -6,9 +6,6 @@
  */
 //globaler variabler
 let oGameData = {};
-let start = true; //bool för undantagshantering i validateGame();
-var drag = false; //bool för timerfunkion
-var intervalID; //interval ID för timerfunktion
 
 /**
  * Initerar det globala objektet med de attribut som ni skall använda er av.
@@ -168,12 +165,8 @@ function init(){
     element.addEventListener("click", listenerNewGame);
     //När knappen klickas skall funktionen validateForm anropas.
     function listenerNewGame() {
+
         validateForm();
-        
-        //spelet ska bara startas när alla "krav" i validate form är uppfyllda
-        if(start == true){
-            initiateGame();
-        }  
         
     }
 }
@@ -182,7 +175,6 @@ window.onload = init; // Lyssnare för load
 //undantagshantering för spelarnas namn och färg
 function validateForm(){
 
-    
     try {
         var limit = 5;
 
@@ -221,12 +213,12 @@ function validateForm(){
             throw new Error("Färgerna är samma för båda spelare");
             
         }
-        start = true;
+        //kallar på initiateGame();
+        initiateGame();
     }
     //skriver ut felmeddelanden och förhindrar att spelet startas
     catch(oError){
     document.getElementById("errorMsg").innerHTML = oError.message;
-    start = false;
     }
     
 }
@@ -282,6 +274,7 @@ function initiateGame(){
 
    //börjar en timer om checkbox är kryssad
    let check = document.querySelector("#timer");
+
    if (check.checked == true){
        oGameData.timerEnabled = true;
    } 
@@ -298,8 +291,8 @@ function initiateGame(){
 }
 
 function executeMove(e){
-    drag = true;
- 
+    console.log("executeMove");
+
     //controllera om checkbox är kryssa
     if(oGameData.timerEnabled == true){
         
@@ -307,7 +300,6 @@ function executeMove(e){
         clearInterval(oGameData.timerId);
         oGameData.timerId = setInterval(interval, 5000);
    }
-    
     //on man klickar på en td element
     let tableElement = e.target;
     if(tableElement.tagName == "TD"){
@@ -340,7 +332,7 @@ function executeMove(e){
              var result = oGameData.checkForGameOver(); //anropa rättningsfunktion
              //om det finns en vinnare eller spelet är oavgjort
              if(result == 1 || result == 2 || result == 3){
-                 window.clearInterval(intervalID);
+                 window.clearInterval(oGameData.timerId);
                 this.removeEventListener("click", executeMove); //ta bort lyssnare
                 document.getElementById("divInForm").classList.remove("d-none"); // ta bort klassen på formuläret
                 //utskrift när spelet är klart beror på vem som vunnit eller om det är oavgjort
@@ -358,7 +350,7 @@ function executeMove(e){
 
             }   
         }
-        drag = false;
+        
     }
 }
 
@@ -389,13 +381,13 @@ function timer() {
 
 //Funktionen som byter tur varje 5 sekunder om aktuell spelare inte gör sitt drag
 function interval (){
+    console.log("interval");
 
     // variabel för h1-elementet som nås i hela funktionen
     var headerone =  document.querySelector("h1");
 
     // if-sats som gör olika utskrifter i h1 beroende på vems tur det är
 
-    if (drag == false){
         if (oGameData.currentPlayer == oGameData.playerOne){  
             
             //ändra tur till spelare 2 och uppdatera utskrift
@@ -410,9 +402,4 @@ function interval (){
             headerone.textContent = "Aktuell spelare är " +  oGameData.nickNamePlayerOne+ " ("+ oGameData.playerOne+ ")";
             
         }
-   }
-   // om någon har gjort ett drag så ändras boolen drag till "false"
-   else if (drag == true){
-       drag = false;
-   }
 }
